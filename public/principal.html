@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Alura Typer</title>
-
+    <link rel="stylesheet" href="css/libs/materialize.min.css">
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
+
 <body>
-    <h1>Alura Typer</h1>
-    <p class="frase">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Modi odit reprehenderit repudiandae voluptatem sequi ducimus commodi, consequuntur harum delectus, assumenda neque soluta incidunt quae eligendi, perferendis error sunt odio dolores.</p>
     
-    <ul class="informacoes">
-        <li>30 palavras</li>
-        <li>10 segundos</li>
-    </ul>
+    <div class="container">
+        <h1 class="center">Alura Typer</h1>
+        <p class="frase center">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Modi odit reprehenderit repudiandae voluptatem sequi ducimus commodi, consequuntur harum delectus, assumenda neque soluta incidunt quae eligendi, perferendis error sunt odio dolores.</p>
+        
+        <ul class="informacoes center">
+            <li><span id="tamanho-frase">30</span> palavras</li>
+            <li><span id="tempo-digitacao">4</span> segundos</li>
+        </ul>
+
+        <textarea class="campo-digitacao" cols="30" rows="10"></textarea>
+        <button id="botao-reiniciar">Reiniciar jogo</button>
+
+        <ul class="center">
+            <li><span id="contador-caracteres">0</span> caracteres</li>
+            <li><span id="contador-palavras">0</span> palavras</li>
+        </ul>
+    </div>
 
     <script src="js/jquery.js"></script>
     <script src="js/main.js"></script>
