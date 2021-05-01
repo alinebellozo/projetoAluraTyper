@@ -8,8 +8,22 @@ $(function(){
     inicializaCronometro();
     inicializaMarcadores();
     $("#botao-reiniciar").click(reiniciaJogo); // posso trocar on.("click") por .click
+    atualizaPlacar();
+    $('#usuarios').selectize({
+        create: true,
+        sortField: 'text'
+    });
+
+    $(".tooltip").tooltipster();
 
 });
+
+function atualizaTempoInicial(tempo){
+    tempoInicial = tempo;
+    $("#tempo-digitacao").text(tempo);
+}
+
+
 
 function atualizaTamanhoFrase(){
     var frase = $(".frase").text(); //$ = função jQuery
@@ -30,9 +44,8 @@ function inicializaContadores(){
 }
 
 function inicializaCronometro(){
-
-    var tempoRestante = $("#tempo-digitacao").text();
     campo.one("focus", function(){ // focus é um evento que detecta quando o usuário entra no campo clicando ou usando tab
+        var tempoRestante = $("#tempo-digitacao").text();
         var cronometroID = setInterval(function(){
             tempoRestante--;
             $("#tempo-digitacao").text(tempoRestante);
@@ -51,9 +64,8 @@ function finalizaJogo(){
 }
 
 function inicializaMarcadores(){
-    
-    var frase = $(".frase").text();
     campo.on("input", function(){
+        var frase = $(".frase").text();
         var digitado = campo.val();
         var comparavel = frase.substr(0, digitado.length);
         

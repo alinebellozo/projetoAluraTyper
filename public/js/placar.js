@@ -1,10 +1,10 @@
 $("#botao-placar").click(mostraPlacar);
-
+$("#botao-sync").click(sincronizaPlacar);
 
 function inserePlacar(){
     
     var corpoTabela = $(".placar").find("tbody");
-    var usuario = "Aline";
+    var usuario = $("#usuarios").val();
     var numPalavras = $("#contador-palavras").text();
     //var botaoExcluir = "<a href='#'><i class='small material-icons'>delete</i></a>"
     
@@ -60,13 +60,59 @@ function excluiLinha(){
         linha.remove();
     },1000);
 }
-// fadeOut não remove, ele vai esmaecendo o texto até ficar com o display none; tem que remover depois, mas usando o seTimeOut, que me permite setar o tempo em que eu quero que desapareça. Existe o fadeIn, para aparecer aos poucos, e o fadeToggle, pra alternar.
 
 function mostraPlacar(){
     $(".placar").stop().slideToggle(1000);
     // $(".placar").css("display", "block"); ->>> posso substituir o estilo do css pelo toggle
     // slideDown e slideUp servem para ir mostrando aos poucos o texto selecionado; o slideToggle alterna entre pra cima e pra baixo 
 }
+
+function sincronizaPlacar(){
+    var placar = [];
+    var linhas = $("tbody>tr"); // tr que é filha direta de tbody
+    linhas.each(function(){
+        var usuario = $(this).find("td:nth-child(1)").text(); 
+        var palavras = $(this).find("td:nth-child(2)").text();
+
+        var score = {
+            usuario: usuario,
+            pontos: palavras
+        };
+
+        placar.push(score);
+    });
+
+    var dados = {
+        placar: placar
+    }
+
+    $.post("http://localhost:3000/placar", dados , function() {
+        console.log("Placar sincronizado com sucesso");
+        $(".tooltip").tooltipster("open");
+    }).fail(function(){
+        $(".tooltip").tooltipster("open").tooltipster("content", "Falha ao sincronizar");
+    }).always(function(){ //novo
+        setTimeout(function() {
+        $(".tooltip").tooltipster("close"); 
+    }, 1200);    
+    });
+}
+
+function atualizaPlacar(){
+
+    $.get("http://localhost:3000/placar", function(data){
+        $(data).each(function(){
+            var linha = novaLinha(this.usuario, this.pontos);
+            linha.find(".botao-excluir").click(excluiLinha);
+            $("tbody").append(linha);
+        });
+    });
+}
+
+
+// fadeOut não remove, ele vai esmaecendo o texto até ficar com o display none; tem que remover depois, mas usando o seTimeOut, que me permite setar o tempo em que eu quero que desapareça. Existe o fadeIn, para aparecer aos poucos, e o fadeToggle, pra alternar.
+
+
 
 //O jQuery possui a função is que permite consultar uma pseudo class. Toda vez que um elemento esta com display diferente de none ele ganha a pseudo classe :visible . A função is retorna true caso o elemento esteja visível. Se ele estiver visível, precisamos escondê-lo e isso é feito através da função hide. Para exibir o elemento, é usada a função show.
 
